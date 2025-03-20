@@ -1,0 +1,31 @@
+---
+- name: Deploy Express.js App
+  hosts: localhost
+  become: yes
+  tasks:
+  - name: Install Node.js and npm
+    yum:
+      name: 
+        - nodejs
+        - npm
+      state: present
+  
+  - name: Copy application files
+    copy:
+      src: ./
+      dest: /app
+      mode: 0755
+
+  - name: Install application dependencies
+    command: npm install
+    args:
+      chdir: /app
+  
+  - name: Start the application
+    command: npm start
+    args:
+      chdir: /app
+    async: 0
+    poll: 0
+    
+  
